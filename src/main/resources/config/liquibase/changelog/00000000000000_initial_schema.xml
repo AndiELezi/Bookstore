@@ -74,6 +74,15 @@
             </column>
         </createTable>
 
+
+        <createTable tableName="jhi_book_category">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+            </column>
+        </createTable>
+
         <createTable tableName="jhi_user_authority">
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
