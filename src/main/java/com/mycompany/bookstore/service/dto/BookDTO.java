@@ -1,0 +1,78 @@
+package com.mycompany.bookstore.service.dto;
+
+import com.mycompany.bookstore.domain.Book;
+
+import java.sql.Date;
+
+/**
+ * A DTO representing a book
+*/
+public class BookDTO {
+
+    private String isbn;
+    private String title;
+    private Date publicationDate;
+    private float price;
+    private String description;
+
+    public BookDTO() {
+    }
+    public  BookDTO(Book book){
+        this.isbn=book.getIsbn();
+        this.title=book.getTitle();
+        this.publicationDate=book.getPublicationDate();
+        this.price= book.getPrice();;
+        this.description=book.getDescription();
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "BookDTO{" +
+            "isbn='" + isbn + '\'' +
+            ", title='" + title + '\'' +
+            ", price='" + price + '\'' +
+            ", publication date='" + publicationDate + '\'' +
+            ", description='" + description + '\'' +
+            "}";
+    }
+}
