@@ -1,10 +1,8 @@
 package com.mycompany.bookstore.domain;
 
-import org.springframework.data.annotation.CreatedDate;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -39,6 +37,10 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description", length = 100)
     private String description;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    BookCategory category;
 
     public String getIsbn() {
         return isbn;
@@ -78,6 +80,14 @@ public class Book extends AbstractAuditingEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BookCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(BookCategory category) {
+        this.category = category;
     }
 
     @Override

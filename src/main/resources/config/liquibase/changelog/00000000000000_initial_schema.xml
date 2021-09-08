@@ -64,6 +64,8 @@
             </column>
             <column name="description" type="varchar(300)">
             </column>
+            <column name="category_id" type="bigint">
+            </column>
             <column name="created_by" type="varchar(50)">
             </column>
             <column name="created_date" type="timestamp">
@@ -82,6 +84,12 @@
             <column name="name" type="varchar(50)">
             </column>
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="jhi_book"
+                                 constraintName="fk_book_category"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_book_category"/>
 
         <createTable tableName="jhi_user_authority">
             <column name="user_id" type="bigint">

@@ -1,9 +1,12 @@
 package com.mycompany.bookstore.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
+
 /**
  * Book category used to represent the category a book belongs to
  */
@@ -21,6 +24,11 @@ public class BookCategory implements Serializable {
     @Column(length = 50)
     private String name;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "category")
+    public List<Book> books;
+
+
     public Long getId() {
         return id;
     }
@@ -35,6 +43,14 @@ public class BookCategory implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override
