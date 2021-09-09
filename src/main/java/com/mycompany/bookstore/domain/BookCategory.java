@@ -28,7 +28,6 @@ public class BookCategory implements Serializable {
     @OneToMany(mappedBy = "category")
     public List<Book> books;
 
-
     public Long getId() {
         return id;
     }

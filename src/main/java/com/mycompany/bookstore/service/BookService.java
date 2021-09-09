@@ -3,7 +3,7 @@ package com.mycompany.bookstore.service;
 import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.repository.BookRepository;
 import com.mycompany.bookstore.service.dto.BookDTO;
-import com.mycompany.bookstore.service.dto.UserDTO;
+import com.mycompany.bookstore.service.mapper.BookMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,16 +18,18 @@ import java.util.Optional;
 public class BookService {
     private final Logger log = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository){
-        this.bookRepository=bookRepository;
+    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
-    public Book createBook(Book book){
-        return bookRepository.save(book);
+    public BookDTO createBook(BookDTO bookDTO) {
+        return bookMapper.bookToBookDTO(bookRepository.save(bookMapper.BookDTOToBook(bookDTO)));
     }
 
-    public Optional<BookDTO> updateBook(BookDTO bookDTO){
+    public Optional<BookDTO> updateBook(BookDTO bookDTO) {
         return Optional
             .of(bookRepository.findById(bookDTO.getIsbn()))
             .filter(Optional::isPresent)
@@ -38,14 +40,27 @@ public class BookService {
                     bookToBeUpdated.setPublicationDate(bookDTO.getPublicationDate());
                     bookToBeUpdated.setPrice(bookDTO.getPrice());
                     bookToBeUpdated.setDescription(bookDTO.getDescription());
-                    return  bookToBeUpdated;
+                    return bookToBeUpdated;
                 }
             )
             .map(BookDTO::new);
     }
 
-    public Optional<Book> getBook(String isbn){
-        return bookRepository.findById(isbn);
+    public BookDTO getBook(String isbn) {
+        Optional<Book> bookOptional = bookRepository.findByIsbnAndActiveTrue(isbn);
+        if (bookOptional.isPresent()) {
+            return bookMapper.bookToBookDTO(bookOptional.get());
+        }
+        return new BookDTO();
+    }
+
+    public BookDTO getBookIgnoreDeleted(String isbn) {
+        Optional<Book> bookOptional = bookRepository.findById(isbn);
+        if (bookOptional.isPresent()) {
+            return bookMapper.bookToBookDTO(bookOptional.get());
+        }
+        return new BookDTO();
+
     }
 
 
@@ -59,8 +74,8 @@ public class BookService {
             );
     }
 
-    public Page<BookDTO> getAllBooks(Pageable pageable){
-        return  bookRepository.findAll(pageable).map(BookDTO::new);
+    public Page<BookDTO> getAllBooks(Pageable pageable) {
+        return bookRepository.findAllByActiveTrue(pageable).map(BookDTO::new);
     }
 
 }

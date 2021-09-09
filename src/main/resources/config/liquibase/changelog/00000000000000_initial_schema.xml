@@ -64,6 +64,8 @@
             </column>
             <column name="description" type="varchar(300)">
             </column>
+            <column name="active" type="boolean">
+            </column>
             <column name="category_id" type="bigint">
             </column>
             <column name="created_by" type="varchar(50)">
@@ -117,6 +119,15 @@
         <addNotNullConstraint   columnName="password_hash"
                                 columnDataType="varchar(60)"
                                 tableName="jhi_user"/>
+
+
+
+        <loadData
+            file="config/liquibase/data/book_category.cvs"
+            separator=";"
+            tableName="jhi_book_category">
+            <column name="id" type="numeric"/>
+        </loadData>
 
         <loadData
                   file="config/liquibase/data/user.csv"

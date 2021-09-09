@@ -37,6 +37,9 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description", length = 100)
     private String description;
 
+    @Column(name="active")
+    private boolean active;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -80,6 +83,14 @@ public class Book extends AbstractAuditingEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public BookCategory getCategory() {

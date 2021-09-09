@@ -1,6 +1,8 @@
 package com.mycompany.bookstore.web.rest;
 
 import com.mycompany.bookstore.domain.Book;
+import com.mycompany.bookstore.domain.BookCategory;
+import com.mycompany.bookstore.service.BookCategoryService;
 import com.mycompany.bookstore.service.BookService;
 import com.mycompany.bookstore.service.dto.BookDTO;
 import com.mycompany.bookstore.web.rest.errors.BadRequestAlertException;
@@ -28,10 +30,12 @@ public class BookResource {
     private final Logger log = LoggerFactory.getLogger(BookResource.class);
 
     private final BookService bookService;
+    private final BookCategoryService bookCategoryService;
 
 
-    public BookResource(BookService bookService) {
+    public BookResource(BookService bookService,BookCategoryService bookCategoryService) {
         this.bookService = bookService;
+        this.bookCategoryService=bookCategoryService;
     }
 
 
@@ -42,10 +46,10 @@ public class BookResource {
      * @return the {@link ResponseEntity} with status {@code 200 (ok)} and with body the book, or with status {@code 404 (Not Found)} if the login or email is already in use.
      */
     @GetMapping("/books/{isbn}")
-    public ResponseEntity<Book> getBookByIsbn(@PathVariable String isbn) {
-        Optional<Book> book = bookService.getBook(isbn);
-        if (book.isPresent()) {
-            return new ResponseEntity<Book>(book.get(), HttpStatus.OK);
+    public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable String isbn) {
+       BookDTO bookDTO = bookService.getBook(isbn);
+        if (bookDTO.getIsbn()!=null) {
+            return new ResponseEntity<>(bookDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -67,15 +71,19 @@ public class BookResource {
     /**
      * {@code POST  /api/books}  : Creates a book
      *
-     * @param book The book to be created.
+     * @param bookDTO The book to be created.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the created book, or with status {@code 409 (Conflict)} if the book isbn is already registered.
      */
     @PostMapping("/books")
-    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book) {
-        Optional<Book> checkBook = bookService.getBook(book.getIsbn());
-        if (checkBook.isPresent()) {
+    public ResponseEntity<BookDTO> addBook(@Valid @RequestBody BookDTO bookDTO) {
+        BookDTO checkBook = bookService.getBook(bookDTO.getIsbn());
+        if (checkBook.getIsbn()!=null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>(bookService.createBook(book), HttpStatus.CREATED);
+        Optional<BookCategory> checkCategory=bookCategoryService.getBookCategory(bookDTO.getCategoryId());
+        if (!checkCategory.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(bookService.createBook(bookDTO), HttpStatus.CREATED);
     }
 }
