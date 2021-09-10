@@ -2,6 +2,7 @@ package com.mycompany.bookstore.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,7 +38,7 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description", length = 100)
     private String description;
 
-    @Column(name="active")
+    @Column(name = "active")
     private boolean active;
 
     @JsonBackReference

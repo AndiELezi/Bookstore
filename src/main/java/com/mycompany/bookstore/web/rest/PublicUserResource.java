@@ -2,8 +2,10 @@ package com.mycompany.bookstore.web.rest;
 
 import com.mycompany.bookstore.service.UserService;
 import com.mycompany.bookstore.service.dto.UserDTO;
+
 import java.util.*;
 import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -56,6 +58,7 @@ public class PublicUserResource {
 
     /**
      * Gets a list of all roles.
+     *
      * @return a string list of all roles.
      */
     @GetMapping("/authorities")

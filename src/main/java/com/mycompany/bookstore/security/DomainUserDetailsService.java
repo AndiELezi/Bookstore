@@ -2,8 +2,10 @@ package com.mycompany.bookstore.security;
 
 import com.mycompany.bookstore.domain.User;
 import com.mycompany.bookstore.repository.UserRepository;
+
 import java.util.*;
 import java.util.stream.Collectors;
+
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

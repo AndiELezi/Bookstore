@@ -10,12 +10,14 @@ import com.mycompany.bookstore.service.dto.AdminUserDTO;
 import com.mycompany.bookstore.web.rest.errors.BadRequestAlertException;
 import com.mycompany.bookstore.web.rest.errors.EmailAlreadyUsedException;
 import com.mycompany.bookstore.web.rest.errors.LoginAlreadyUsedException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.Collections;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,7 +104,7 @@ public class UserResource {
      *
      * @param userDTO the user to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws URISyntaxException       if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
     @PostMapping("/users")

@@ -4,6 +4,7 @@ import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.domain.BookCategory;
 import com.mycompany.bookstore.service.dto.BookDTO;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,18 +19,18 @@ public class BookMapper {
         return new BookDTO(book);
     }
 
-    public Book BookDTOToBook(BookDTO bookDTO){
-        Book book=new Book();
+    public Book BookDTOToBook(BookDTO bookDTO) {
+        Book book = new Book();
         book.setIsbn(bookDTO.getIsbn());
         book.setTitle(bookDTO.getTitle());
         book.setPrice(bookDTO.getPrice());
         book.setDescription(bookDTO.getDescription());
         book.setPublicationDate(bookDTO.getPublicationDate());
         book.setActive(true);
-        BookCategory bookCategory=new BookCategory();
+        BookCategory bookCategory = new BookCategory();
         bookCategory.setId(bookDTO.getCategoryId());
         book.setCategory(bookCategory);
-        return  book;
+        return book;
     }
 
     public Book bookFromIsbn(String isbn) {
@@ -40,8 +41,6 @@ public class BookMapper {
         book.setIsbn(isbn);
         return book;
     }
-
-
 
 
 }

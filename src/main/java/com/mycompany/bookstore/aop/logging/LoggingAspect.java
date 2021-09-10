@@ -1,6 +1,7 @@
 package com.mycompany.bookstore.aop.logging;
 
 import java.util.Arrays;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,7 +16,7 @@ import tech.jhipster.config.JHipsterConstants;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
- *
+ * <p>
  * By default, it only runs with the "dev" profile.
  */
 @Aspect
@@ -32,8 +33,8 @@ public class LoggingAspect {
      */
     @Pointcut(
         "within(@org.springframework.stereotype.Repository *)" +
-        " || within(@org.springframework.stereotype.Service *)" +
-        " || within(@org.springframework.web.bind.annotation.RestController *)"
+            " || within(@org.springframework.stereotype.Service *)" +
+            " || within(@org.springframework.web.bind.annotation.RestController *)"
     )
     public void springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
@@ -44,8 +45,8 @@ public class LoggingAspect {
      */
     @Pointcut(
         "within(com.mycompany.bookstore.repository..*)" +
-        " || within(com.mycompany.bookstore.service..*)" +
-        " || within(com.mycompany.bookstore.web.rest..*)"
+            " || within(com.mycompany.bookstore.service..*)" +
+            " || within(com.mycompany.bookstore.web.rest..*)"
     )
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
@@ -65,7 +66,7 @@ public class LoggingAspect {
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice.
-     * @param e exception.
+     * @param e         exception.
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {

@@ -29,7 +29,6 @@ public class BookDTO {
         this.title = book.getTitle();
         this.publicationDate = book.getPublicationDate();
         this.price = book.getPrice();
-        ;
         this.description = book.getDescription();
         this.categoryId = book.getCategory().getId();
         this.categoryName = book.getCategory().getName();

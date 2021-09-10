@@ -3,6 +3,7 @@ package com.mycompany.bookstore.service.dto;
 import com.mycompany.bookstore.config.Constants;
 import com.mycompany.bookstore.domain.Authority;
 import com.mycompany.bookstore.domain.User;
+
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;

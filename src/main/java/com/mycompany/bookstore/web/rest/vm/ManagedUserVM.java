@@ -1,6 +1,7 @@
 package com.mycompany.bookstore.web.rest.vm;
 
 import com.mycompany.bookstore.service.dto.AdminUserDTO;
+
 import javax.validation.constraints.Size;
 
 /**

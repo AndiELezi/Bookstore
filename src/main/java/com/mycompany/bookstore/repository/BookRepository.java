@@ -13,7 +13,8 @@ import java.util.Optional;
  * Spring Data JPA repository for the {@link Book} entity.
  */
 @Repository
-public interface BookRepository extends JpaRepository<Book,String> {
+public interface BookRepository extends JpaRepository<Book, String> {
     public Page<Book> findAllByActiveTrue(Pageable pageable);
+
     public Optional<Book> findByIsbnAndActiveTrue(String isbn);
 }

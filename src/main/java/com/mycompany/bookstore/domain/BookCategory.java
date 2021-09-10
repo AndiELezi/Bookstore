@@ -2,6 +2,7 @@ package com.mycompany.bookstore.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mycompany.bookstore.security.jwt.JWTFilter;
 import com.mycompany.bookstore.security.jwt.TokenProvider;
 import com.mycompany.bookstore.web.rest.vm.LoginVM;
+
 import javax.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -8,10 +8,11 @@ import com.mycompany.bookstore.domain.BookCategory;
 public class BookCategoryDTO {
     String name;
 
-    public BookCategoryDTO(){}
+    public BookCategoryDTO() {
+    }
 
-    public BookCategoryDTO(BookCategory bookCategory){
-        this.name=bookCategory.getName();
+    public BookCategoryDTO(BookCategory bookCategory) {
+        this.name = bookCategory.getName();
     }
 
     public String getCategoryName() {

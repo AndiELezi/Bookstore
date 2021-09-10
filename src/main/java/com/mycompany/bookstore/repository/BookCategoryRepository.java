@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface BookCategoryRepository extends JpaRepository<BookCategory,Long> {
+public interface BookCategoryRepository extends JpaRepository<BookCategory, Long> {
 
 }

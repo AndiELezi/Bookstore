@@ -33,9 +33,9 @@ public class BookResource {
     private final BookCategoryService bookCategoryService;
 
 
-    public BookResource(BookService bookService,BookCategoryService bookCategoryService) {
+    public BookResource(BookService bookService, BookCategoryService bookCategoryService) {
         this.bookService = bookService;
-        this.bookCategoryService=bookCategoryService;
+        this.bookCategoryService = bookCategoryService;
     }
 
 
@@ -47,8 +47,8 @@ public class BookResource {
      */
     @GetMapping("/books/{isbn}")
     public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable String isbn) {
-       BookDTO bookDTO = bookService.getBook(isbn);
-        if (bookDTO.getIsbn()!=null) {
+        BookDTO bookDTO = bookService.getBook(isbn);
+        if (bookDTO.getIsbn() != null) {
             return new ResponseEntity<>(bookDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -77,10 +77,10 @@ public class BookResource {
     @PostMapping("/books")
     public ResponseEntity<BookDTO> addBook(@Valid @RequestBody BookDTO bookDTO) {
         BookDTO checkBook = bookService.getBook(bookDTO.getIsbn());
-        if (checkBook.getIsbn()!=null) {
+        if (checkBook.getIsbn() != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        Optional<BookCategory> checkCategory=bookCategoryService.getBookCategory(bookDTO.getCategoryId());
+        Optional<BookCategory> checkCategory = bookCategoryService.getBookCategory(bookDTO.getCategoryId());
         if (!checkCategory.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

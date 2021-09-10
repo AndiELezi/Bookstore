@@ -2,6 +2,7 @@ package com.mycompany.bookstore.security;
 
 import java.util.Optional;
 import java.util.stream.Stream;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -13,7 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public final class SecurityUtils {
 
-    private SecurityUtils() {}
+    private SecurityUtils() {
+    }
 
     /**
      * Get the login of the current user.

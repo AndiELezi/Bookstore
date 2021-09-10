@@ -1,6 +1,7 @@
 package com.mycompany.bookstore.web.rest.vm;
 
 import com.mycompany.bookstore.domain.BookCategory;
+
 import java.util.stream.Collectors;
 
 /**
@@ -11,15 +12,16 @@ public class BooksOnCategoryVM {
     private String categoryName;
     private int numberOfBooks;
 
-    public BooksOnCategoryVM(){}
+    public BooksOnCategoryVM() {
+    }
 
-    public BooksOnCategoryVM(BookCategory bookCategory){
-        this.categoryName=bookCategory.getName();
-        this.numberOfBooks=bookCategory.getBooks()
-                                       .stream()
-                                       .filter(book -> book.isActive())
-                                       .collect(Collectors.toList())
-                                       .size();
+    public BooksOnCategoryVM(BookCategory bookCategory) {
+        this.categoryName = bookCategory.getName();
+        this.numberOfBooks = bookCategory.getBooks()
+            .stream()
+            .filter(book -> book.isActive())
+            .collect(Collectors.toList())
+            .size();
     }
 
     public String getCategoryName() {
