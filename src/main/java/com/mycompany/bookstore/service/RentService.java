@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @Service
 public class RentService {
+    private static final int MAX_RENTED_BOOKS = 3;
     private final Logger log = LoggerFactory.getLogger(RentService.class);
     private final RentRepository rentRepository;
     private final UserRepository userRepository;
@@ -51,5 +52,13 @@ public class RentService {
         } else {
             return new RentDTO();
         }
+    }
+
+    public boolean canUserRentBook() {
+        Optional<User> user = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        if (!user.isPresent()) {
+            return false;
+        }
+        return rentRepository.findAllByUserAndReturnedIsFalse(user.get()).size() < MAX_RENTED_BOOKS;
     }
 }
