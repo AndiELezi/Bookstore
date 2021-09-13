@@ -93,6 +93,34 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_book_category"/>
 
+        <createTable tableName="jhi_rent">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="rent_date" type="date">
+            </column>
+            <column name="returned" type="boolean">
+            </column>
+            <column name="user_id" type="bigint">
+            </column>
+            <column name="book_id" type="varchar(13)">
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="jhi_rent"
+                                 constraintName="fk_user_rent"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="jhi_rent"
+                                 constraintName="fk_book_rent"
+                                 referencedColumnNames="isbn"
+                                 referencedTableName="jhi_book"/>
+
+
+
         <createTable tableName="jhi_user_authority">
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
