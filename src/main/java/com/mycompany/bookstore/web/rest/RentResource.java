@@ -51,6 +51,10 @@ public class RentResource {
         if (!rentService.canUserRentBook()) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createAlert(applicationName, "User can not make more than 3 rents", rentBookVm.getIsbn())).build();
         }
+        if (!rentService.checkBookAvailability(rentBookVm.getIsbn())) {
+            return ResponseEntity.notFound().headers(HeaderUtil.createAlert(applicationName, "Book is not available at the moment", rentBookVm.getIsbn())).build();
+        }
+
         RentDTO rent = rentService.createRent(rentBookVm.getIsbn());
         if (rent.getBookIsbn() == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

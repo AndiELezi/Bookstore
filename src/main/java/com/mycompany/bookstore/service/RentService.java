@@ -56,9 +56,17 @@ public class RentService {
 
     public boolean canUserRentBook() {
         Optional<User> user = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             return false;
         }
         return rentRepository.findAllByUserAndReturnedIsFalse(user.get()).size() < MAX_RENTED_BOOKS;
+    }
+
+    public boolean checkBookAvailability(String bookIsbn) {
+        Optional<Book> book = bookRepository.findByIsbnAndActiveTrue(bookIsbn);
+        if (book.isEmpty()) {
+            return false;
+        }
+        return rentRepository.findByBookAndReturnedIsFalse(book.get()).isEmpty();
     }
 }
