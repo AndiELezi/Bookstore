@@ -1,5 +1,6 @@
 package com.mycompany.bookstore.service;
 
+import com.mycompany.bookstore.domain.Rent;
 import com.mycompany.bookstore.domain.User;
 
 import java.nio.charset.StandardCharsets;
@@ -30,6 +31,8 @@ public class MailService {
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     private static final String USER = "user";
+
+    private static final String RENT = "rent";
 
     private static final String BASE_URL = "baseUrl";
 
@@ -95,6 +98,21 @@ public class MailService {
     }
 
     @Async
+    public void sendRentEmailFromTemplate(Rent rent, String templateName, String titleKey) {
+        if (rent.getUser().getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", rent.getUser().getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(rent.getUser().getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(RENT, rent);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(rent.getUser().getEmail(), subject, content, false, true);
+    }
+
+    @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
@@ -110,5 +128,10 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    @Async
+    void sendRentDelayMail(Rent rent) {
+        sendRentEmailFromTemplate(rent, "mail/rentDelayEmail", "email.rent.title");
     }
 }

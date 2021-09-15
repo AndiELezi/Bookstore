@@ -19,6 +19,8 @@ import java.util.Optional;
 public interface RentRepository extends JpaRepository<Rent, Long> {
     Page<Rent> findAllByReturnedIsFalse(Pageable pageable);
 
+    List<Rent> findAllByReturnedIsFalse();
+
     Optional<Rent> findByBookAndReturnedIsFalse(Book book);
 
     List<Rent> findAllByUserAndReturnedIsFalse(User user);

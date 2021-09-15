@@ -12,10 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service class for managing rents.
@@ -24,15 +26,18 @@ import java.util.Optional;
 @Service
 public class RentService {
     private static final int MAX_RENTED_BOOKS = 3;
+    private static final int BOOK_MAX_RENT_DAYS = 14;
     private final Logger log = LoggerFactory.getLogger(RentService.class);
     private final RentRepository rentRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final MailService mailService;
 
-    public RentService(RentRepository rentRepository, UserRepository userRepository, BookRepository bookRepository) {
+    public RentService(RentRepository rentRepository, UserRepository userRepository, BookRepository bookRepository, MailService mailService) {
         this.rentRepository = rentRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.mailService = mailService;
     }
 
     public Page<RentDTO> getAllActiveRents(Pageable pageable) {
@@ -69,4 +74,18 @@ public class RentService {
         }
         return rentRepository.findByBookAndReturnedIsFalse(book.get()).isEmpty();
     }
+
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void notifyUsersToReturnBook() {
+        rentRepository.findAllByReturnedIsFalse().forEach(rent -> {
+            long differenceInMilliseconds = System.currentTimeMillis() - rent.getRentDate().getTime();
+            long days = TimeUnit.MILLISECONDS.toDays(differenceInMilliseconds);
+            if (days > BOOK_MAX_RENT_DAYS) {
+                mailService.sendRentDelayMail(rent);
+            }
+        });
+
+    }
+
+
 }
