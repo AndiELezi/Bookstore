@@ -8,16 +8,19 @@ import com.mycompany.bookstore.repository.RentRepository;
 import com.mycompany.bookstore.repository.UserRepository;
 import com.mycompany.bookstore.security.SecurityUtils;
 import com.mycompany.bookstore.service.dto.RentDTO;
+import com.mycompany.bookstore.web.rest.vm.UserRentNrVm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing rents.
@@ -73,6 +76,21 @@ public class RentService {
             return false;
         }
         return rentRepository.findByBookAndReturnedIsFalse(book.get()).isEmpty();
+    }
+
+    public Optional<UserRentNrVm> userWithMostRents() {
+        List<UserRentNrVm> userRentNrVmList = new ArrayList<>();
+
+        rentRepository.findAllByReturnedIsFalse()
+            .stream()
+            .collect(Collectors.groupingBy(Rent::getUser, Collectors.counting()))
+            .forEach((user, nrOfRents) -> {
+                userRentNrVmList.add(new UserRentNrVm(user.getLogin(), nrOfRents));
+            });
+
+        return userRentNrVmList.stream()
+            .sorted(Comparator.comparingLong(UserRentNrVm::getNrOfRentedBooks).reversed())
+            .findFirst();
     }
 
     @Scheduled(cron = "0 0 8 * * ?")

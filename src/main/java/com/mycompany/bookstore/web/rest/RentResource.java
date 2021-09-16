@@ -3,6 +3,7 @@ package com.mycompany.bookstore.web.rest;
 import com.mycompany.bookstore.service.RentService;
 import com.mycompany.bookstore.service.dto.RentDTO;
 import com.mycompany.bookstore.web.rest.vm.RentBookVm;
+import com.mycompany.bookstore.web.rest.vm.UserRentNrVm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Rest controller for managing rents
@@ -75,5 +77,15 @@ public class RentResource {
         final Page<RentDTO> page = rentService.getAllActiveRents(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/mostRents")
+    public ResponseEntity<UserRentNrVm> getUserWithMostRents() {
+        Optional<UserRentNrVm> userRentNrVmOptional = rentService.userWithMostRents();
+        if (userRentNrVmOptional.isPresent()) {
+            return new ResponseEntity<>(userRentNrVmOptional.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
