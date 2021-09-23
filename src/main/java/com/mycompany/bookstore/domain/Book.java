@@ -46,6 +46,11 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "category_id")
     BookCategory category;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    BookSeries series;
+
     public String getIsbn() {
         return isbn;
     }

@@ -26,4 +26,5 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 
     List<Rent> findAllByUserAndReturnedIsFalse(User user);
 
+
 }
