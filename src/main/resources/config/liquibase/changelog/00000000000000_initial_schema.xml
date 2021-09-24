@@ -172,12 +172,28 @@
             <column name="id" type="numeric"/>
         </loadData>
 
+
+        <loadData
+            file="config/liquibase/data/book_series.csv"
+            separator=";"
+            tableName="jhi_book_series">
+            <column name="id" type="numeric"/>
+        </loadData>
+
         <loadData
             file="config/liquibase/data/user.csv"
             separator=";"
             tableName="jhi_user">
             <column name="id" type="numeric"/>
             <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+
+        <loadData
+            file="config/liquibase/data/book.cvs"
+            separator=";"
+            tableName="jhi_book">
+            <column name="active" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
 

@@ -25,7 +25,7 @@ public class BookSeries {
     private String name;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "series")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "series")
     @OrderBy("publicationDate ASC ")
     public List<Book> books;
 

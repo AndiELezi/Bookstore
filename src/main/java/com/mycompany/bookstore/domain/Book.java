@@ -107,6 +107,14 @@ public class Book extends AbstractAuditingEntity implements Serializable {
         this.category = category;
     }
 
+    public BookSeries getSeries() {
+        return series;
+    }
+
+    public void setSeries(BookSeries series) {
+        this.series = series;
+    }
+
     @Override
     public String toString() {
         return "BookDTO{" +

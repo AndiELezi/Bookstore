@@ -1,0 +1,12 @@
+isbn;title;price;publication_date;description;active;category_id;series_id;created_by;created_date;last_modified_by
+ISBN000000001;Book1;10;2010-03-31;Book 1 description;true;1;1;System;;System
+ISBN000000002;Book2;10;2009-03-31;Book 2 description;true;1;1;System;;System
+ISBN000000003;Book3;10;2019-03-31;Book 3 description;true;2;1;System;;System
+ISBN000000004;Book4;10;2008-03-31;Book 4 description;true;3;2;System;;System
+ISBN000000005;Book5;10;2009-03-31;Book 5 description;true;3;2;System;;System
+ISBN000000006;Book6;10;2012-03-31;Book 6 description;true;1;2;System;;System
+ISBN000000007;Book7;10;2002-03-31;Book 7 description;true;1;2;System;;System
+ISBN000000008;Book8;10;2005-03-31;Book 8 description;true;3;3;System;;System
+ISBN000000009;Book9;10;2009-03-31;Book 9 description;true;3;3;System;;System
+ISBN000000010;Book10;10;2016-03-31;Book 10 description;true;2;3;System;;System
+ISBN000000011;Book11;10;2008-03-31;Book 11 description;true;1;4;System;;System
