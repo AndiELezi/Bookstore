@@ -1,6 +1,8 @@
 package com.mycompany.bookstore.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -47,6 +49,7 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     BookCategory category;
 
     @JsonBackReference
+    @NotFound(action=NotFoundAction.IGNORE)
     @ManyToOne
     @JoinColumn(name = "series_id")
     BookSeries series;

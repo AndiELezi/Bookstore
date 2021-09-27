@@ -10,3 +10,4 @@ ISBN000000008;Book8;10;2005-03-31;Book 8 description;true;3;3;System;;System
 ISBN000000009;Book9;10;2009-03-31;Book 9 description;true;3;3;System;;System
 ISBN000000010;Book10;10;2016-03-31;Book 10 description;true;2;3;System;;System
 ISBN000000011;Book11;10;2008-03-31;Book 11 description;true;1;4;System;;System
+ISBN000000012;BookWithoutSeries;10;2008-03-31;Book description;true;1;0;System;;System

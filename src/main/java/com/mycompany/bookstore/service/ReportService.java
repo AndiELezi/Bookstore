@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+
 /**
  * Service class for managing Reports.
  */
@@ -88,7 +89,8 @@ public class ReportService {
             addCell(bodyRow, 2, book.getDescription(), bodyStyle);
             addCell(bodyRow, 3, book.getPublicationDate(), dateStyle);
             addCell(bodyRow, 4, book.getCategory().getName(), bodyStyle);
-            addCell(bodyRow, 5, book.getSeries().getName(), bodyStyle);
+            var bookSeries = book.getSeries() == null ? "Null" : book.getSeries().getName();
+            addCell(bodyRow, 5, bookSeries, bodyStyle);
             addCell(bodyRow, 6, book.getPrice(), bodyStyle);
             addCell(bodyRow, 7, book.isActive(), bodyStyle);
             rowIndex++;

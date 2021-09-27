@@ -97,17 +97,20 @@
 
         <createTable tableName="jhi_book_series">
             <column name="id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar(50)">
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="series_id"
+        <!--
+                To avoid foreign key conflict when not finding a book series with certain id
+        -->
+        <!--<addForeignKeyConstraint baseColumnNames="series_id"
                                  baseTableName="jhi_book"
                                  constraintName="fk_book_series"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_book_series"/>
+                                 referencedTableName="jhi_book_series"/>-->
 
         <createTable tableName="jhi_rent">
             <column name="id" type="bigint">
@@ -134,7 +137,6 @@
                                  constraintName="fk_book_rent"
                                  referencedColumnNames="isbn"
                                  referencedTableName="jhi_book"/>
-
 
 
         <createTable tableName="jhi_user_authority">
