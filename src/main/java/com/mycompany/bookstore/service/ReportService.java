@@ -1,5 +1,7 @@
 package com.mycompany.bookstore.service;
 
+import com.mycompany.bookstore.domain.Book;
+import com.mycompany.bookstore.domain.BookSeries;
 import com.mycompany.bookstore.repository.BookRepository;
 import com.mycompany.bookstore.repository.BookSeriesRepository;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,8 +17,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import java.util.List;
 /**
  * Service class for managing Reports.
  */
@@ -39,7 +40,7 @@ public class ReportService {
 
     public void exportToExel(HttpServletResponse httpServletResponse) throws IOException {
         createFirstSheet();
-        createSecondSheet();
+        createSecondSheet(bookSeriesRepository.findAll()); // to avoid calling same data from database
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         xssfWorkbook.write(servletOutputStream);
     }
@@ -69,9 +70,7 @@ public class ReportService {
     }
 
     private void createFirstSheetBody() {
-        var lambdaContext = new Object() {
-            int rowIndex = 1;
-        }; //to access it inside lambda
+        int rowIndex = 1;
 
         CellStyle bodyStyle = xssfWorkbook.createCellStyle();
         CellStyle dateStyle = xssfWorkbook.createCellStyle();
@@ -81,8 +80,9 @@ public class ReportService {
         bodyStyle.setFont(bodyFont);
         dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat("dd-mm-yyyy"));
         dateStyle.setFont(bodyFont);
-        bookRepository.findAll().forEach(book -> {
-            Row bodyRow = bookSheet.createRow(lambdaContext.rowIndex);
+
+        for (Book book : bookRepository.findAll()) {
+            Row bodyRow = bookSheet.createRow(rowIndex);
             addCell(bodyRow, 0, book.getIsbn(), bodyStyle);
             addCell(bodyRow, 1, book.getTitle(), bodyStyle);
             addCell(bodyRow, 2, book.getDescription(), bodyStyle);
@@ -91,60 +91,55 @@ public class ReportService {
             addCell(bodyRow, 5, book.getSeries().getName(), bodyStyle);
             addCell(bodyRow, 6, book.getPrice(), bodyStyle);
             addCell(bodyRow, 7, book.isActive(), bodyStyle);
-            lambdaContext.rowIndex++;
-        });
+            rowIndex++;
+        }
     }
 
-    private void createSecondSheet() {
+    private void createSecondSheet(List<BookSeries> bookSeriesList) {
         bookSeriesSheet = xssfWorkbook.createSheet("Book Series");
-        createSecondSheetHeader();
-        createSecondSheetBody();
+        createSecondSheetHeader(bookSeriesList);
+        createSecondSheetBody(bookSeriesList);
     }
 
-    private void createSecondSheetHeader() {
-        var lambdaContext = new Object() {
-            int colNumb = 0;
-        }; //to use and modify inside lambda
+    private void createSecondSheetHeader(List<BookSeries> bookSeriesList) {
+        int colNumb = 0;
         Row header = bookSeriesSheet.createRow(0);
         CellStyle headerStyle = xssfWorkbook.createCellStyle();
         XSSFFont headerFont = xssfWorkbook.createFont();
         headerFont.setBold(true);
         headerFont.setFontHeight(HEADER_SIZE);
         headerStyle.setFont(headerFont);
-        bookSeriesRepository.findAll().forEach(bookSeries -> {
-            addCell(header, lambdaContext.colNumb, bookSeries.getName(), headerStyle);
-            lambdaContext.colNumb++;
-        });
+
+        for (BookSeries bookSeries : bookSeriesList) {
+            addCell(header, colNumb, bookSeries.getName(), headerStyle);
+            colNumb++;
+        }
+
     }
 
-    private void createSecondSheetBody() {
-        var lambdaRowContext = new Object() {
-            int maxRowIndex = 0;
-        };
-        var lambdaColContext = new Object() {
-            int colNo = 0;
-        };
+    private void createSecondSheetBody(List<BookSeries> bookSeriesList) {
+        int maxRowIndex = 0;
+        int colNo = 0;
         CellStyle bodyStyle = xssfWorkbook.createCellStyle();
         XSSFFont bodyFont = xssfWorkbook.createFont();
         bodyFont.setFontHeight(BODY_SIZE);
         bodyStyle.setFont(bodyFont);
-        bookSeriesRepository.findAll().forEach(bookSeries -> {
-            AtomicInteger currentRowIndex = new AtomicInteger(1); //to us inside nested lambda
-            bookSeries.getBooks().forEach(book -> {
+        for (BookSeries bookSeries : bookSeriesList) {
+            int currentRowIndex = 1;
+            for (Book book : bookSeries.getBooks()) {
                 Row currentRow;
-                if (currentRowIndex.get() > lambdaRowContext.maxRowIndex) {
-                    lambdaRowContext.maxRowIndex = currentRowIndex.get();
-                    currentRow = bookSeriesSheet.createRow(currentRowIndex.get());
+                if (currentRowIndex > maxRowIndex) {
+                    maxRowIndex = currentRowIndex;
+                    currentRow = bookSeriesSheet.createRow(currentRowIndex);
                 } else {
-                    currentRow = bookSeriesSheet.getRow(currentRowIndex.get());
+                    currentRow = bookSeriesSheet.getRow(currentRowIndex);
                 }
-                addCell(currentRow, lambdaColContext.colNo, book.getTitle(), bodyStyle);
-                currentRowIndex.getAndIncrement();
-            });
-            lambdaColContext.colNo++;
-        });
+                addCell(currentRow, colNo, book.getTitle(), bodyStyle);
+                currentRowIndex++;
+            }
+            colNo++;
+        }
     }
-
 
     private void addCell(Row row, int col, Object value, CellStyle style) {
         bookSheet.autoSizeColumn(col);
