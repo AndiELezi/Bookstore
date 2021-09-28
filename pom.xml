@@ -102,6 +102,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
         <!-- for managing microsoft documents -->
         <dependency>
             <groupId>org.apache.poi</groupId>

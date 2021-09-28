@@ -1,5 +1,6 @@
 package com.mycompany.bookstore.service;
 
+import com.google.common.base.MoreObjects;
 import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.domain.BookSeries;
 import com.mycompany.bookstore.repository.BookRepository;
@@ -89,7 +90,7 @@ public class ReportService {
             addCell(bodyRow, 2, book.getDescription(), bodyStyle);
             addCell(bodyRow, 3, book.getPublicationDate(), dateStyle);
             addCell(bodyRow, 4, book.getCategory().getName(), bodyStyle);
-            var bookSeries = book.getSeries() == null ? "Null" : book.getSeries().getName();
+            var bookSeries = MoreObjects.firstNonNull(book.getSeries(), "Null");
             addCell(bodyRow, 5, bookSeries, bodyStyle);
             addCell(bodyRow, 6, book.getPrice(), bodyStyle);
             addCell(bodyRow, 7, book.isActive(), bodyStyle);
@@ -158,6 +159,8 @@ public class ReportService {
         } else if (value instanceof Date) {
             java.util.Date publicationDate = new java.util.Date(((Date) value).getTime());
             cell.setCellValue(publicationDate);
+        } else if (value instanceof BookSeries) {
+            cell.setCellValue(((BookSeries) value).getName());
         }
         cell.setCellStyle(style);
     }
