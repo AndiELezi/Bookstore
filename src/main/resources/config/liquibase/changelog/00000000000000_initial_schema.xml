@@ -138,6 +138,19 @@
                                  referencedColumnNames="isbn"
                                  referencedTableName="jhi_book"/>
 
+        <createTable tableName="jhi_review">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+            <column name="user_id" type="bigint">
+            </column>
+            <column name="book_id" type="varchar(13)">
+            </column>
+            <column name="rating" type="int">
+            </column>
+            <column name="creation_date" type="date">
+            </column>
+        </createTable>
 
         <createTable tableName="jhi_user_authority">
             <column name="user_id" type="bigint">
@@ -197,6 +210,25 @@
             tableName="jhi_book">
             <column name="active" type="boolean"/>
             <column name="created_date" type="timestamp"/>
+        </loadData>
+
+        <loadData
+            file="config/liquibase/data/rent.csv"
+            separator=";"
+            tableName="jhi_rent">
+            <column name="returned" type="boolean"/>
+            <column name="rent_date" type="timestamp"/>
+            <column name="id" type="numeric"></column>
+        </loadData>
+
+        <loadData
+            file="config/liquibase/data/review.csv"
+            separator=";"
+            tableName="jhi_review">
+            <column name="rent_date" type="timestamp"/>
+            <column name="rating" type="numeric"></column>
+            <column name="user_id" type="numeric"></column>
+            <column name="id" type="numeric"></column>
         </loadData>
 
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>

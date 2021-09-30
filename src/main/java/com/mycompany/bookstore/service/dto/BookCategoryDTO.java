@@ -1,12 +1,13 @@
 package com.mycompany.bookstore.service.dto;
 
+import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.domain.BookCategory;
 
 /**
  * A DTO representing a book category
  */
 public class BookCategoryDTO {
-    String name;
+    private String name;
 
     public BookCategoryDTO() {
     }

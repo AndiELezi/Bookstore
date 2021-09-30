@@ -1,11 +1,15 @@
 package com.mycompany.bookstore.service.dto;
 
+import com.google.common.base.MoreObjects;
 import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.domain.BookCategory;
+import com.mycompany.bookstore.domain.Review;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A DTO representing a book
@@ -20,6 +24,9 @@ public class BookDTO {
     @NotNull
     private Long categoryId;
     private String categoryName;
+    private float averageRating;
+    private Long bookSeriesId;
+    private String bookSeriesName;
 
     public BookDTO() {
     }
@@ -32,6 +39,25 @@ public class BookDTO {
         this.description = book.getDescription();
         this.categoryId = book.getCategory().getId();
         this.categoryName = book.getCategory().getName();
+        if (book.getSeries() != null) {
+            this.bookSeriesId = book.getSeries().getId();
+            this.bookSeriesName = book.getSeries().getName();
+        }
+        calculateBookRating(book);
+    }
+
+    private void calculateBookRating(Book book) {
+        averageRating = 0;
+        if (book.getReviews() != null) {
+            if (book.getReviews().size() > 0) {
+                List<Review> bookReviews = book.getReviews();
+                for (Review review : bookReviews) {
+                    averageRating += review.getRating();
+                }
+                averageRating = averageRating / bookReviews.size();
+            }
+        }
+
     }
 
     public String getIsbn() {
@@ -90,6 +116,29 @@ public class BookDTO {
         this.categoryName = categoryName;
     }
 
+    public float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(float averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public String getBookSeriesName() {
+        return bookSeriesName;
+    }
+
+    public void setBookSeriesName(String bookSeriesName) {
+        this.bookSeriesName = bookSeriesName;
+    }
+
+    public Long getBookSeriesId() {
+        return bookSeriesId;
+    }
+
+    public void setBookSeriesId(Long bookSeriesId) {
+        this.bookSeriesId = bookSeriesId;
+    }
 
     @Override
     public String toString() {

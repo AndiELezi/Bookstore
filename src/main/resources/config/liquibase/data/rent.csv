@@ -1,0 +1,4 @@
+id;rent_date;returned;user_id;book_id
+1;2010-03-31;true;1;ISBN000000001
+2;2010-03-31;true;2;ISBN000000001
+3;2010-03-31;true;3;ISBN000000001

@@ -30,17 +30,17 @@ public class ReportService {
 
     private final BookRepository bookRepository;
     private final BookSeriesRepository bookSeriesRepository;
-    private final XSSFWorkbook xssfWorkbook;
+    private XSSFWorkbook xssfWorkbook;
     private XSSFSheet bookSheet;
     private XSSFSheet bookSeriesSheet;
 
     public ReportService(BookRepository bookRepository, BookSeriesRepository bookSeriesRepository) {
         this.bookRepository = bookRepository;
         this.bookSeriesRepository = bookSeriesRepository;
-        this.xssfWorkbook = new XSSFWorkbook();
     }
 
     public void exportToExel(HttpServletResponse httpServletResponse) throws IOException {
+        this.xssfWorkbook = new XSSFWorkbook();
         createFirstSheet();
         createSecondSheet(bookSeriesRepository.findAll()); // to avoid calling same data from database
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();

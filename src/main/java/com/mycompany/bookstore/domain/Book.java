@@ -1,15 +1,19 @@
 package com.mycompany.bookstore.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * A book
@@ -49,10 +53,14 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     BookCategory category;
 
     @JsonBackReference
-    @NotFound(action=NotFoundAction.IGNORE)
+    @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne
     @JoinColumn(name = "series_id")
     BookSeries series;
+
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    public List<Review> reviews;
 
     public String getIsbn() {
         return isbn;
@@ -116,6 +124,14 @@ public class Book extends AbstractAuditingEntity implements Serializable {
 
     public void setSeries(BookSeries series) {
         this.series = series;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override

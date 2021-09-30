@@ -2,6 +2,7 @@ package com.mycompany.bookstore.service.mapper;
 
 import com.mycompany.bookstore.domain.Book;
 import com.mycompany.bookstore.domain.BookCategory;
+import com.mycompany.bookstore.domain.BookSeries;
 import com.mycompany.bookstore.service.dto.BookDTO;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,9 @@ public class BookMapper {
         book.setActive(true);
         BookCategory bookCategory = new BookCategory();
         bookCategory.setId(bookDTO.getCategoryId());
+        BookSeries bookSeries=new BookSeries();
+        bookSeries.setId(bookDTO.getBookSeriesId());
+        book.setSeries(bookSeries);
         book.setCategory(bookCategory);
         return book;
     }

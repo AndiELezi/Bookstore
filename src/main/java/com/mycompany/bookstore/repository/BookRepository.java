@@ -17,4 +17,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
     public Page<Book> findAllByActiveTrue(Pageable pageable);
 
     public Optional<Book> findByIsbnAndActiveTrue(String isbn);
+
+    public Optional<Book> findByIsbn(String isbn);
 }

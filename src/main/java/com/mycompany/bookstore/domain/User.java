@@ -1,11 +1,13 @@
 package com.mycompany.bookstore.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mycompany.bookstore.config.Constants;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javax.persistence.*;
@@ -90,6 +92,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     )
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    public List<Review> reviews;
 
     public Long getId() {
         return id;
@@ -194,6 +200,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override
